@@ -1,9 +1,9 @@
 # FCC Backend Projects!!!
 
 This is filled with example backend API and Microservices Projects done for FreeCodeCamp's Backend License.
-You can navigate the different projects by going to the main entry point for the site at url=https://apis.ricotrebeljahr.de and selecting the api you like.
+You can navigate the different projects by going to the main entry point for the site at https://apis.ricotrebeljahr.de and selecting the api you like.
 
-If you want to clone and use this repository on your own machine simply clone it via git commands and then npm install, populate the .env.example with your own values for a mongo at mlab or similar and then you are good to go. Simply npm start to start the server at url=http://localhost:3000
+If you want to clone and use this repository on your own machine simply clone it via git commands and then npm install, populate the .env.example with your own values for a mongo at mlab or similar and then you are good to go. Simply npm start to start the server at http://localhost:3000
 
 # API Project: URL Shortener Microservice for freeCodeCamp
 
