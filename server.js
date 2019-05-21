@@ -122,11 +122,13 @@ app.get("/", (req, res) => {
 app.get("/shorturls", function(req, res) {
   res.sendFile(process.cwd() + "/views/shorturls.html");
 });
+app.get("/filedata", (req, res) => {
+  res.sendFile(process.cwd() + "/views/filedata.html");
+});
+app.get("/exercises", function(req, res) {
+  res.sendFile(process.cwd() + "/views/exercises.html");
+});
 
 app.listen(port, function() {
   console.log("Node.js listening on port " + port);
-});
-
-app.get("/exercises", function(req, res) {
-  res.sendFile(process.cwd() + "/views/exercises.html");
 });
