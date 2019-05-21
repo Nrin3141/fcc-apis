@@ -1,0 +1,7 @@
+.flex {
+  display: flex;
+  flex-direction: column;
+}
+.flex > * {
+  margin-bottom: 20px;
+}
