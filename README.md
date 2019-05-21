@@ -1,11 +1,14 @@
-#FCC Backend Projects!!!
+# FCC Backend Projects!!!
+
 This is filled with example backend API and Microservices Projects done for FreeCodeCamp's Backend License.
 You can navigate the different projects by going to the main entry point for the site at url=https://apis.ricotrebeljahr.de and selecting the api you like.
 
 If you want to clone and use this repository on your own machine simply clone it via git commands and then npm install, populate the .env.example with your own values for a mongo at mlab or similar and then you are good to go. Simply npm start to start the server at url=http://localhost:3000
 
-#API Project: URL Shortener Microservice for freeCodeCamp
-###User Stories
+# API Project: URL Shortener Microservice for freeCodeCamp
+
+### User Stories
+
 I can POST a URL to [project_url]/api/shorturl/new and I will receive a shortened URL in the JSON response. Example : {"original_url":"www.google.com","short_url":1}
 If I pass an invalid URL that doesn't follow the valid http(s)://www.example.com(/more/routes) format, the JSON response will contain an error like {"error":"invalid URL"}. HINT: to be sure that the submitted url points to a valid site you can use the function dns.lookup(host, cb) from the dns core module.
 When I visit the shortened URL, it will redirect me to my original link.
