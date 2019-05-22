@@ -16,6 +16,7 @@ const port = process.env.PORT || 3000;
 const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
+const fs = require("fs");
 
 let urlSchema = new mongoose.Schema({
   original_url: String,
@@ -120,7 +121,9 @@ app.get("/api/exercise/log/:id", (req, res) => {
 });
 
 app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
-  res.send({ filename: req.file.originalname, size: req.file.size });
+  let answer = { filename: req.file.originalname, size: req.file.size };
+  fs.unlinkSync(__dirname + "/" + req.file.path);
+  res.send(answer);
 });
 app.get("/", (req, res) => {
   res.sendFile(process.cwd() + "/views/index.html");
