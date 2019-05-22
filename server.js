@@ -9,7 +9,7 @@ const promise = mongoose.connect(
 );
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function() {});
+db.once("open", () => {});
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3000;
@@ -37,9 +37,27 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/public", express.static(process.cwd() + "/public"));
-app.post("/api/shorturl/new", (req, res) => {
+
+app.get("*/api/timestamp/:date_string?", function(req, res) {
+  let date;
+  if (req.params.date_string) {
+    date = new Date(req.params.date_string);
+  } else {
+    date = new Date();
+  }
+  res.json({ unix: date.getTime(), utc: date.toUTCString() });
+});
+
+app.get("*/api/whoami", function(req, res) {
+  res.json({
+    ipaddress: req.ip,
+    language: req.headers["accept-language"],
+    software: req.headers["user-agent"]
+  });
+});
+app.post("*/api/shorturl/new", (req, res) => {
   if (urlRegex.test(req.body.url)) {
-    urlModel.find(function(err, urls) {
+    urlModel.find((err, urls) => {
       if (err) return console.error(err);
       let sampleURL = new urlModel({
         original_url: req.body.url,
@@ -56,14 +74,14 @@ app.post("/api/shorturl/new", (req, res) => {
     res.send({ error: "invalid URL" });
   }
 });
-app.get("/api/shorturl/:id", (req, res) => {
+app.get("*/api/shorturl/:id", (req, res) => {
   urlModel.find({ short_url: req.params.id }, (err, data) => {
     if (err && !data) console.error(err);
     else res.redirect(data[0].original_url);
   });
 });
 
-app.post("/api/exercise/new-user", (req, res) => {
+app.post("*/api/exercise/new-user", (req, res) => {
   let user = new Users({
     username: req.body.username
   });
@@ -75,13 +93,13 @@ app.post("/api/exercise/new-user", (req, res) => {
   res.send(user);
 });
 
-app.post("/api/exercise/add", (req, res) => {
+app.post("*/api/exercise/add", (req, res) => {
   let newExercise = {
     description: req.body.description,
     date: req.body.date || new Date(),
     duration: req.body.duration
   };
-  Users.findOne({ _id: req.body.userId }, function(err, doc) {
+  Users.findOne({ _id: req.body.userId }, (err, doc) => {
     if (err) console.error(err);
     doc.log = [...doc.log, newExercise];
     doc.count = doc.log.length;
@@ -92,13 +110,13 @@ app.post("/api/exercise/add", (req, res) => {
   });
 });
 
-app.get("/api/exercise/users", (req, res) => {
+app.get("*/api/exercise/users", (req, res) => {
   Users.find((err, users) => {
     res.send(users);
   });
 });
 
-app.get("/api/exercise/log/:id", (req, res) => {
+app.get("*/api/exercise/log/:id", (req, res) => {
   Users.findOne({ _id: req.params.id }, (err, user) => {
     if (err && !data) console.error(err);
     else {
@@ -120,7 +138,7 @@ app.get("/api/exercise/log/:id", (req, res) => {
   });
 });
 
-app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
+app.post("*/api/fileanalyse", upload.single("upfile"), (req, res) => {
   let answer = { filename: req.file.originalname, size: req.file.size };
   fs.unlinkSync(__dirname + "/" + req.file.path);
   res.send(answer);
@@ -128,16 +146,22 @@ app.post("/api/fileanalyse", upload.single("upfile"), (req, res) => {
 app.get("/", (req, res) => {
   res.sendFile(process.cwd() + "/views/index.html");
 });
-app.get("/shorturls", function(req, res) {
+app.get("/timestamp", (req, res) => {
+  res.sendFile(process.cwd() + "/views/timestamp.html");
+});
+app.get("/headers", (req, res) => {
+  res.sendFile(process.cwd() + "/views/headers.html");
+});
+app.get("/shorturls", (req, res) => {
   res.sendFile(process.cwd() + "/views/shorturls.html");
 });
 app.get("/filedata", (req, res) => {
   res.sendFile(process.cwd() + "/views/filedata.html");
 });
-app.get("/exercises", function(req, res) {
+app.get("/exercises", (req, res) => {
   res.sendFile(process.cwd() + "/views/exercises.html");
 });
 
-app.listen(port, function() {
+app.listen(port, () => {
   console.log("Node.js listening on port " + port);
 });
